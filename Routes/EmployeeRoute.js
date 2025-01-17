@@ -37,7 +37,7 @@ router.get('/detail/:id', (req, res) => {
     })
 })
 // In your Node.js/Express backend
-router.post('/employee/update-hours', (req, res) => {
+router.post('/update-hours', (req, res) => {
     const { id, hoursWorked } = req.body;
 
     const sql = "UPDATE workers SET hours_of_work = hours_of_work + ? WHERE id = ?";
@@ -50,17 +50,12 @@ router.post('/employee/update-hours', (req, res) => {
     });
 });
 
-router.get('/logout', async (req, res) => {
-    try {
-        res.clearCookie('token');
-        return res.json({ Status: true });
-    } catch (error) {
-        console.error("Error logging out:", error);
-        return res.status(500).json({ Status: false, Error: "An error occurred while logging out" });
-    }
+router.get('/logout', (req, res) => {
+    // Clear the token cookie
+    res.clearCookie('token', { path: '/', httpOnly: true });
+    // Send a consistent response structure
+    return res.json({ status: true });
 });
-
-
 
 
 export {router as EmployeeRouter}
